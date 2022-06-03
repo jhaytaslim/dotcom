@@ -2,13 +2,12 @@ import express from 'express'
 import { nanoid } from 'nanoid'
 import { version } from '../package.json'
 import { BadWord, badWords, User, users, Result } from './utils/data'
-import { JsonResponse } from './utils'
+import { convertObjectToArray, JsonResponse, SuggestWords } from './utils'
 import { validateRegister } from './utils/validate'
+import { checkUsername } from './service'
 const router = express.Router()
 
-const convertObjectToArray = (object: any) => {
-  return [...Object.values(object)]
-}
+
 
 router.get('/', (_, res) =>
   res.send(`Server is up and running version ${version}`)
@@ -16,33 +15,21 @@ router.get('/', (_, res) =>
 
 router.post('/register', (req, res, next) => {
   try {
-    let result: Result;
-    const { error } = validateRegister(req.body)
-    if (error) return JsonResponse(res, 400, error.details[0].message)
-    //validate username for badWords
-    const userWithBadWord =<BadWord> (<Array<BadWord>>convertObjectToArray(badWords)).find(
-      item => req.body.username.indexOf(item.value) !== -1
-    )
+    let result = checkUsername(req.body.username)
+    if (result.found === false) {
+      result = {
+        found: false,
+        data: SuggestWords(req.body.username)
+      }
 
-    if (userWithBadWord) return JsonResponse(res, 400, `Username cannot contain ${userWithBadWord.value}`)
-
-    //validate username for badWords
-    const userExisting = (<Array<User>>convertObjectToArray(users)).find(
-      item => req.body.username == item.username
-    )
-    if (userExisting) return JsonResponse(res, 400, 'Word already exists')
-
-    // suggest usernames
+      return JsonResponse(res, 400, 'username invalid', result)
+    }
 
     const _id = nanoid()
     users[_id] = { ...req.body, _id }
-    res.send({
-      data: convertObjectToArray(users),
-      msg: 'User added successfully'
-    })
-    return next()
+    return JsonResponse(res, 200, `User added successfully`)
   } catch (err) {
-
+    return JsonResponse(res, 500, 'Server Error')
   }
 })
 

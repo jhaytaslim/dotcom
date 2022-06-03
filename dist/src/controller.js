@@ -36,26 +36,37 @@ router.post('/register', function (req, res, next) {
     try {
         var result = void 0;
         var error = validate_1.validateRegister(req.body).error;
-        if (error)
-            return utils_1.JsonResponse(res, 400, error.details[0].message);
+        if (error) {
+            result = {
+                found: false,
+                data: utils_1.SuggestWords(req.body.username)
+            };
+            return utils_1.JsonResponse(res, 400, error.details[0].message, result);
+        }
         //validate username for badWords
-        var userWithBadWord = convertObjectToArray(data_1.badWords).find(function (item) { return req.body.username.indexOf(item.value) !== -1; });
-        if (userWithBadWord)
-            return utils_1.JsonResponse(res, 400, "Username cannot contain " + userWithBadWord.value);
+        var userWithBadWord = (convertObjectToArray(data_1.badWords).find(function (item) { return req.body.username.indexOf(item.value) !== -1; }));
+        if (userWithBadWord) {
+            result = {
+                found: false,
+                data: utils_1.SuggestWords(req.body.username)
+            };
+            return utils_1.JsonResponse(res, 400, "Username cannot contain " + userWithBadWord.value, result);
+        }
         //validate username for badWords
         var userExisting = convertObjectToArray(data_1.users).find(function (item) { return req.body.username == item.username; });
-        if (userExisting)
-            return utils_1.JsonResponse(res, 400, 'Word already exists');
-        // suggest usernames
+        if (userExisting) {
+            result = {
+                found: false,
+                data: utils_1.SuggestWords(req.body.username)
+            };
+            return utils_1.JsonResponse(res, 400, "Username  " + userExisting.username + " already exists", result);
+        }
         var _id = nanoid_1.nanoid();
         data_1.users[_id] = __assign(__assign({}, req.body), { _id: _id });
-        res.send({
-            data: convertObjectToArray(data_1.users),
-            msg: 'User added successfully'
-        });
-        return next();
+        return utils_1.JsonResponse(res, 200, "User added successfully");
     }
     catch (err) {
+        return utils_1.JsonResponse(res, 500, 'Server Error');
     }
 });
 router.post('/words/add', function (req, res, next) {

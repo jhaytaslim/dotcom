@@ -36,6 +36,7 @@ var SuggestWords = function (value) {
     for (var i = 0; i < 20; i++) {
         arr.push("" + value + (i % 2 == 0 ? i : "_" + i));
     }
+    return arr;
 };
 exports.SuggestWords = SuggestWords;
 //# sourceMappingURL=index.js.map

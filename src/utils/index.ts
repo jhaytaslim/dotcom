@@ -1,4 +1,4 @@
-import { ResponseBody } from './data'
+import { BadWord, badWords, ResponseBody } from './data'
 
 const JsonResponse = (
   res: any,
@@ -35,16 +35,28 @@ const JsonResponse = (
   return
 }
 
-const SuggestWords = (value: string) =>{
+const SuggestWords = (value: string) => {
   let arr = []
+  let i = 0
+  while (arr.length < 10) {
+    const str = `${value}${i % 2 == 0 ? i : `_${i}`}`
+    const bad = <BadWord>(
+      (<Array<BadWord>>convertObjectToArray(badWords)).find(
+        item => str.indexOf(item.value) !== -1
+      )
+    )
 
-  for (let i=0; i<20; i++){
-    arr.push(`${value}${i%2==0? i : `_${i}`}`)
+    if (bad == null) continue
+    arr.push(str.replace(bad.value, ''))
+    i++
+    if (i === 100) break
   }
-  return arr;
+
+  return arr
 }
 
-export  {
-  JsonResponse,
-  SuggestWords
+const convertObjectToArray = (object: any) => {
+  return [...Object.values(object)]
 }
+
+export { JsonResponse, SuggestWords, convertObjectToArray }
