@@ -80,6 +80,8 @@ router.get('/verify/stripe/callback', async (req, res, next) => {
     // See your keys here: https://dashboard.stripe.com/apikeys
     console.log('query: ', req.query)
     console.log('params: ', req.params)
+    console.log('req: ', req)
+    return JsonResponse(res, 200, 'Success')
   } catch (err) {
     console.info(`🚀 Error: ${err} `)
     return JsonResponse(res, 500, 'Server Error')
