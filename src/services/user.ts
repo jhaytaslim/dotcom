@@ -111,18 +111,13 @@ class UserService {
     return new Promise(async (resolve, reject) => {
       const session = await mongoose.startSession()
       try {
-        // Set your secret key. Remember to switch to your live secret key in production.
-        // See your keys here: https://dashboard.stripe.com/apikeys
         const stripe = require('stripe')(config.get('stripeKey'))
-
-        // In the route handler for /create-verification-session:
-        // Authenticate your user.
 
         // Create the session.
         const verificationSession = await stripe.identity.verificationSessions.create(
           {
             type: 'document',
-            return_url: 'https://www.bing.com/verify/stripe/callback',
+            return_url: 'https://zikiauth.herokuapp.com/verify/stripe/callback',
             metadata: {
               user_id: body.id
             },

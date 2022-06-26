@@ -52,12 +52,12 @@ router.post('/register', async (req, res, next) => {
   }
 })
 
-router.get('/verify/stripe/:id', async (req, res, next) => {
+router.get('/verify/:id/stripe', async (req, res, next) => {
   try {
     const userService = new UserService();
     // Create the session.
     const user = await userService.get({id: req.params.id})
-    const verificationSession = await userService.retrieveVerifyStripe(user.verificationSession.client_secret)
+    const verificationSession = await userService.retrieveVerifyStripe(user.verificationSession.id)
 
     return JsonResponse(
       res,
