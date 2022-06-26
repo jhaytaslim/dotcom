@@ -4,6 +4,9 @@
   "main": "index.js",
   "author": "Taslim",
   "license": "MIT",
+  "engines": {
+    "node": "16.x"
+  },
   "scripts": {
     "dev": "nodemon --config nodemon.json src/app.ts",
     "postinstall": "tsc --build",
