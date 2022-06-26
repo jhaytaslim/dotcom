@@ -12,6 +12,7 @@
   "devDependencies": {
     "@types/config": "^0.0.38",
     "@types/express": "^4.17.12",
+    "@types/mongoose": "^5.11.97",
     "@types/node": "^15.12.4",
     "nodemon": "^2.0.15",
     "ts-node": "^10.0.0",
@@ -24,7 +25,9 @@
     "express": "^4.17.1",
     "joi": "^17.6.0",
     "joi-password-complexity": "^5.1.0",
+    "mongoose": "^6.4.0",
     "nanoid": "^3.1.23",
+    "stripe": "^9.9.0",
     "ts-node": "^10.0.0"
   }
 }

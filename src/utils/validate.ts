@@ -1,26 +1,26 @@
-import Joi from 'joi';
-import passwordComplexity from 'joi-password-complexity';
+// import Joi from 'joi';
+// import passwordComplexity from 'joi-password-complexity';
 
-const complexityOptions = {
-  min: 6,
-  max: 20,
-  requirementCount: 2
-}
+// const complexityOptions = {
+//   min: 6,
+//   max: 20,
+//   requirementCount: 2
+// }
 
-const passwordComplexityOptions = () => {
-  return passwordComplexity(complexityOptions)
-}
+// const passwordComplexityOptions = () => {
+//   return passwordComplexity(complexityOptions)
+// }
 
-function validateRegister (body: any) {
-  const schema = Joi.object({
-    username: passwordComplexityOptions().required(),
-    name: Joi.string().optional()
-  })
+// function validateRegister (body: any) {
+//   const schema = Joi.object({
+//     username: passwordComplexityOptions().required(),
+//     name: Joi.string().optional()
+//   })
 
-  return schema.validate(body)
-}
+//   return schema.validate(body)
+// }
 
 
-export {
-    validateRegister
-}
+// export {
+//     validateRegister
+// }
