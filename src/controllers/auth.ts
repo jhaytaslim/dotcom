@@ -76,11 +76,9 @@ router.get('/verify/:id/stripe', async (req, res, next) => {
 
 router.get('/verify/stripe/callback', async (req, res, next) => {
   try {
-    // Set your secret key. Remember to switch to your live secret key in production.
-    // See your keys here: https://dashboard.stripe.com/apikeys
-    console.log('query: ', req.query)
-    console.log('params: ', req.params)
-    console.log('req: ', req)
+    // console.log('query: ', req.query)
+    // console.log('params: ', req.params)
+    console.log('req: ', req.body,req.query,req.params)
     return JsonResponse(res, 200, 'Success')
   } catch (err) {
     console.info(`🚀 Error: ${err} `)
