@@ -1,4 +1,7 @@
 import { BadWord, badWords, ResponseBody } from './data'
+import config from 'config'
+const bcrypt = require('bcryptjs')
+const jwt = require('jsonwebtoken')
 
 const JsonResponse = (
   res: any,
@@ -59,4 +62,22 @@ const convertObjectToArray = (object: any) => {
   return [...Object.values(object)]
 }
 
-export { JsonResponse, SuggestWords, convertObjectToArray }
+const generateToken = (user : any)=> {
+  const token = jwt.sign(
+    {
+      id: user.id,
+      email: user.email,
+      // type: user.type,
+      // platform: user.platform,
+      // role: user.role
+      // group: user.group,
+      // enterprise: user.enterprise?._id
+    },
+    config.get('jwt.key'),
+    { expiresIn: config.get('jwt.expireDate') }
+  )
+  return token
+}
+
+
+export { JsonResponse, SuggestWords, convertObjectToArray, generateToken }

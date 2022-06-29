@@ -30,6 +30,8 @@ class UserService {
           return
         }
 
+        
+
         const user = new User(body)
         await user.save({ session: session })
 
@@ -52,7 +54,7 @@ class UserService {
    * @param {String} body
    * @param {Object} user
    */
-   update (body: any): Promise<any> {
+  update (body: any): Promise<any> {
     return new Promise(async (resolve, reject) => {
       const session = await mongoose.startSession()
       try {
@@ -102,6 +104,29 @@ class UserService {
       }
     })
   }
+
+  find (body: any): Promise<any> {
+    return new Promise(async (resolve, reject) => {
+      const session = await mongoose.startSession()
+      try {
+        session.startTransaction()
+        console.log('body:', body)
+        const user = await User.findOne(body)
+        if (!user) {
+          reject({ code: 400, msg: 'Account doesn"t exist.' })
+          return
+        }
+
+        resolve(user)
+      } catch (error) {
+        session.abortTransaction()
+        console.log('error', error)
+        reject({ code: 500, msg: 'Server Error' })
+        return
+      }
+    })
+  }
+
   /**
    * Create a Company account
    * @param {String} body
@@ -201,6 +226,7 @@ class UserService {
       data: []
     }
   }
+
 }
 
 export default UserService

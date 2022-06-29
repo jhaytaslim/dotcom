@@ -24,11 +24,13 @@
   },
   "dependencies": {
     "@types/cors": "^2.8.12",
+    "bcryptjs": "^2.4.3",
     "config": "^3.3.6",
     "cors": "^2.8.5",
     "express": "^4.17.1",
     "joi": "^17.6.0",
     "joi-password-complexity": "^5.1.0",
+    "jsonwebtoken": "^8.5.1",
     "mongoose": "^6.4.0",
     "nanoid": "^3.1.23",
     "stripe": "^9.9.0",

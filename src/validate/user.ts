@@ -13,19 +13,12 @@ const passwordComplexityOptions = () => {
 
 function validateRegister (body: any) {
   const schema = Joi.object({
-    // ValidateLength(d.Username, 6, "Username").
-    // ValidateLength(d.FirstName, 2, "Firstname").
-    // ValidateLength(d.LastName, 2, "Lastname").
-    // ValidateLength(d.Password, 6, "Password").
-    // ValidateLength(d.ConfirmPassword, 6, "Confirm_Password").
-    // ValidateLength(d.ReferrerID, 9, "Referral_Code").
-    // ValidatePassword(d.Password, d.ConfirmPassword).
-
+    email: Joi.string().email().required(),
     username: Joi.string().min(6).required(),
     firstName: Joi.string().min(2).required(),
     lastName: Joi.string().min(2).required(),
     password: passwordComplexityOptions().required(),
-    referrerID: Joi.string().min(9).required(),
+    referrerID: Joi.string().min(9).optional(),
     confirmPassword: Joi.string()
     .valid(Joi.ref('password'))
     .required(),
@@ -35,6 +28,16 @@ function validateRegister (body: any) {
 }
 
 
+function validateLogin (body: any) {
+  const schema = Joi.object({
+    email: Joi.string().email().required(),
+    password: passwordComplexityOptions().required()
+  })
+
+  return schema.validate(body)
+}
+
 export {
-    validateRegister
+    validateRegister,
+    validateLogin
 }
