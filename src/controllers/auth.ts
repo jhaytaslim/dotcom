@@ -42,8 +42,9 @@ router.post('/register', async (req, res, next) => {
       uid: result?._id,
       // verifyUrl: verificationSession?.url,
       // clientSecret: verificationSession?.client_secret,
-      token: generateToken(result)
+      // token: generateToken(result)
     }
+    res.header('x-auth-token', generateToken(result))
 
     return JsonResponse(res, 200, `User added successfully`, resp)
   } catch (err: any) {
@@ -80,9 +81,10 @@ router.post('/login', async (req, res, next) => {
       uid: result?._id,
       // verifyUrl: verificationSession?.url,
       // clientSecret: verificationSession?.client_secret,
-      token: generateToken(result)
+      // token: generateToken(result)
     }
 
+    res.header('x-auth-token', generateToken(result))
     return JsonResponse(res, 200, `User added successfully`, resp)
   } catch (err: any) {
     console.log('err: ', err)
